@@ -1,6 +1,9 @@
-<?php 
+<?php
+    session_start();
  $email = $_GET["email"];
  $pass = $_GET["password"];
+ $_SESSION["user_email"] =  $email;
+ setcookie("user_password",$pass,time()+3600,"/");
 ?>
 <!DOCTYPE html>
 <html>

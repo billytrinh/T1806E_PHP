@@ -1,10 +1,13 @@
+<?php session_start();
+    ?>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Form login</title>
 </head>
 <body>
-	<h1>Form get</h1>
+
 	<form method="GET" action="get.php">
 		<label>Email <input name="email" type="email"/></label>
 		<label>Password <input name="password" type="password"/></label>
