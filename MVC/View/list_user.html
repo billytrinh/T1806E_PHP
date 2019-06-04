@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List User</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <?php foreach($list as $u):?>
+                <tr>
+                    <td><?php echo $u->id;?></td>
+                    <td><?php echo $u->username;?></td>
+                    <td><?php echo $u->email;?></td>
+                    <td><?php echo $u->password;?></td>
+                    <td><?php echo $u->getMark();?></td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+</body>
+</html>

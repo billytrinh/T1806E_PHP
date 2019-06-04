@@ -31,5 +31,6 @@ if($result->num_rows > 0){
 
 if(isset($user)){
     $_SESSION['current_user'] = $user;
+    echo 1;
 }
-echo 1;
+
