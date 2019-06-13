@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\A;
+use App\Author;
 use App\Book;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -82,8 +85,18 @@ class HomeController extends Controller
         return redirect("book");
     }
 
-    public function books(){
-        $books = Book::all();
+    public function books(Request $request){
+//        $books = Book::all();
+        $page = $request->get("page")?$request->get("page"):1;
+        $limit = $request->get("limit")?$request->get("limit"):10;
+        $offset = ($page-1)*$limit;
+//        $books = Book::where("qty",">",100)->where("book_id","<",200)
+//            ->orderBy("qty","ASC")->orderBy("book_name","DESC")
+//            ->skip($offset)->take($limit)->get(); // ASC - DESC
+        $books = Book::where("qty",">",100)->where("book_id","<",200)
+            ->orderBy("qty","ASC")->orderBy("book_name","DESC")
+            ->paginate(10); // ASC - DESC
+
         return view("books",compact("books"));
     }
 
@@ -92,5 +105,32 @@ class HomeController extends Controller
         $book->delete();
 
         return redirect("book");
+    }
+
+    public function authors(){
+        $authors = Author::paginate(20);
+        return view("authors",compact("authors"));
+    }
+
+    public function authorDetail(Request $request){
+        $order = Order::find(1);
+       // dd($order->getProducts);
+        foreach ($order->getProducts as $product){
+            //dd($product->pivot);
+            echo $product->product_name."so luong: ".$product->pivot->qty."<br/>";
+        }
+        die;
+
+//        DB::table("product_order")->insert([
+//            "product_id"=> 1,
+//            "order_id"  =>1,
+//            "qty"   => 1
+//        ]);
+//
+        $author_id = $request->get("author_id");
+        $author = Author::find($author_id);
+
+        return view("author_detail",compact("author"));
+
     }
 }

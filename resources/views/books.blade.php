@@ -16,8 +16,8 @@
                 <tr>
                     <td>{{$book->book_id}}</td>
                     <td>{{$book->book_name}}</td>
-                    <td>{{$book->author}}</td>
-                    <td>{{$book->nxb}}</td>
+                    <td>{{$book->myAuthor->author_name}}</td>
+                    <td>{{$book->myNxb->nxb_name}}</td>
                     <td>{{$book->qty}}</td>
                     <td>
                         <a href="{{url("book/edit?book_id=".$book->book_id)}}">Edit</a>
@@ -28,5 +28,5 @@
             @endforeach
         </tbody>
     </table>
-
+    {!! $books->links("paginator") !!}
 @endsection

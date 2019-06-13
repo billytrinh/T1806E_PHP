@@ -29,3 +29,6 @@ Route::post("book/edit","HomeController@bookUpdate");
 Route::get("book","HomeController@books");
 
 Route::get("book/delete/{book_id}","HomeController@bookDelete");
+
+Route::get("author","HomeController@authors");
+Route::get("author/detail","HomeController@authorDetail");

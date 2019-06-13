@@ -15,4 +15,12 @@ class Book extends Model
 
    // public $timestamps = true;
 
+    public function myAuthor(){
+        return $this->belongsTo("App\Author","author_id");
+    }
+
+    public function myNxb(){
+        return $this->belongsTo("App\Nxb","nxb_id");
+    }
+
 }
