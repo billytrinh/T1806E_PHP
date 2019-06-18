@@ -10,7 +10,7 @@ class Book extends Model
 
     protected $primaryKey = "book_id";
 
-    public $fillable = ["book_name","author_id","nxb_id","qty"];
+    public $fillable = ["book_name","image","author_id","nxb_id","qty"];
     
 
    // public $timestamps = true;

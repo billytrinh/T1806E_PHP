@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\A;
 use App\Author;
 use App\Book;
+use App\Nxb;
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -36,13 +38,18 @@ class HomeController extends Controller
     }
 
     public function bookCreate(){
-        return view("book_form");
+        if(!Auth::check()){
+            redirect("login");
+        }
+        $authors =  Author::Where("active",1)->get();
+        $nxbs = Nxb::Where("active",1)->get();
+        return view("book_form",compact("authors","nxbs"));
     }
 
     public function bookValidate(){
         return [
             'book_name' => ['required', 'string','min:10', 'max:255', 'unique:book'],
-            'author'    => ['required', 'string','min:10', 'max:255'],
+            'author'    => ['required'],
             'nxb'       => ['required'],
             'qty'       => ['required','numeric','min:1']
         ];
@@ -51,12 +58,20 @@ class HomeController extends Controller
     public function bookSave(Request $request){
 
         $this->validate($request,$this->bookValidate());
+        $url_image = null;
+        if($request->hasFile("image")){
+            $file = $request->file("image");
+            $name = time().$file->getClientOriginalName();
+            $file->move("upload",$name);
+            $url_image = "upload/".$name;
+        }
 
         Book::create(
             [
                 "book_name"=> $request->get("book_name"),
-                "author"=> $request->get("author"),
-                "nxb"=> $request->get("nxb"),
+                "image" => $url_image,
+                "author_id"=> $request->get("author"),
+                "nxb_id"=> $request->get("nxb"),
                 "qty"=> $request->get("qty"),
             ]
         )->save();
@@ -93,8 +108,7 @@ class HomeController extends Controller
 //        $books = Book::where("qty",">",100)->where("book_id","<",200)
 //            ->orderBy("qty","ASC")->orderBy("book_name","DESC")
 //            ->skip($offset)->take($limit)->get(); // ASC - DESC
-        $books = Book::where("qty",">",100)->where("book_id","<",200)
-            ->orderBy("qty","ASC")->orderBy("book_name","DESC")
+        $books = Book::orderBy("book_id","ASC")->orderBy("book_name","DESC")
             ->paginate(10); // ASC - DESC
 
         return view("books",compact("books"));

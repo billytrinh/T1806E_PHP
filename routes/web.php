@@ -17,18 +17,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/demo','HomeController@demo');
+Route::group(["prefix"=>"admin","middleware"=> "admin.auth"],function (){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/demo','HomeController@demo');
 
-Route::get("/book/create","HomeController@bookCreate");
-Route::post("/book/create","HomeController@bookSave");
+    Route::get("/book/create","HomeController@bookCreate");
+    Route::post("/book/create","HomeController@bookSave");
 
-Route::get("book/edit","HomeController@bookEdit");
-Route::post("book/edit","HomeController@bookUpdate");
+    Route::get("book/edit","HomeController@bookEdit");
+    Route::post("book/edit","HomeController@bookUpdate");
 
-Route::get("book","HomeController@books");
+    Route::get("book","HomeController@books");
 
-Route::get("book/delete/{book_id}","HomeController@bookDelete");
+    Route::get("book/delete/{book_id}","HomeController@bookDelete");
 
-Route::get("author","HomeController@authors");
-Route::get("author/detail","HomeController@authorDetail");
+    Route::get("author","HomeController@authors");
+    Route::get("author/detail","HomeController@authorDetail");
+});

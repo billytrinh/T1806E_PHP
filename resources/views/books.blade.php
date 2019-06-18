@@ -6,6 +6,7 @@
         <thead>
             <th>ID</th>
             <th>Book Name</th>
+            <th>Image</th>
             <th>Author</th>
             <th>NXB</th>
             <th>Qty</th>
@@ -16,6 +17,7 @@
                 <tr>
                     <td>{{$book->book_id}}</td>
                     <td>{{$book->book_name}}</td>
+                    <td><img src="{{$book->image}}"/></td>
                     <td>{{$book->myAuthor->author_name}}</td>
                     <td>{{$book->myNxb->nxb_name}}</td>
                     <td>{{$book->qty}}</td>
