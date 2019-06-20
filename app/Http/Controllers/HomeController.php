@@ -10,6 +10,7 @@ use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Pusher\Pusher;
 
 class HomeController extends Controller
 {
@@ -124,6 +125,11 @@ class HomeController extends Controller
     public function authors(){
         $authors = Author::paginate(20);
         return view("authors",compact("authors"));
+    }
+
+    public function pushNotify(Request $request){
+        sendMessage("group_class","my-event",["message"=>"hello"]);
+        return "Send notify";
     }
 
     public function authorDetail(Request $request){

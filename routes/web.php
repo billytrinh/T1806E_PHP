@@ -34,3 +34,7 @@ Route::group(["prefix"=>"admin","middleware"=> "admin.auth"],function (){
     Route::get("author","HomeController@authors");
     Route::get("author/detail","HomeController@authorDetail");
 });
+Route::get("view_notify",function (){
+   return view("view_notify");
+});
+Route::get("push_notify","HomeController@pushNotify");
