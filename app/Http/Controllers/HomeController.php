@@ -7,8 +7,10 @@ use App\Author;
 use App\Book;
 use App\Nxb;
 use App\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Pusher\Pusher;
 
@@ -103,16 +105,21 @@ class HomeController extends Controller
 
     public function books(Request $request){
 //        $books = Book::all();
-        $page = $request->get("page")?$request->get("page"):1;
-        $limit = $request->get("limit")?$request->get("limit"):10;
-        $offset = ($page-1)*$limit;
+        if(!Cache::has("home_page")){
+            $page = $request->get("page")?$request->get("page"):1;
+            $limit = $request->get("limit")?$request->get("limit"):10;
+            $offset = ($page-1)*$limit;
 //        $books = Book::where("qty",">",100)->where("book_id","<",200)
 //            ->orderBy("qty","ASC")->orderBy("book_name","DESC")
 //            ->skip($offset)->take($limit)->get(); // ASC - DESC
-        $books = Book::orderBy("book_id","ASC")->orderBy("book_name","DESC")
-            ->paginate(10); // ASC - DESC
-
-        return view("books",compact("books"));
+            $books = Book::orderBy("book_id","ASC")->orderBy("book_name","DESC")
+                ->paginate(100); // ASC - DESC
+            $home_page = view("books",compact("books"))->render();
+            $expired = Carbon::now();
+            $expired = $expired->addMinutes(30);
+            Cache::put("home_page",$home_page,$expired);
+        }
+        return Cache::get("home_page");
     }
 
     public function bookDelete($book_id){
